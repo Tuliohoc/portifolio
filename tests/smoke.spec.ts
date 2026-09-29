@@ -243,8 +243,8 @@ test.describe('academybugs project page', () => {
     await expect(page.locator('#stRate')).toHaveText('90.9%');
     await expect(page.locator('#stDur')).toHaveText('01:42');
 
-    await expect(page.locator('#repList .rep-row')).toHaveCount(5);
-    await expect(page.locator('#repNote')).toContainText('5 of 22');
+    await expect(page.locator('#repList .rep-row')).toHaveCount(6);
+    await expect(page.locator('#repNote')).toContainText('6 of 22');
   });
 
   test('the failed test opens into steps, error and evidence', async ({ page }) => {
@@ -340,7 +340,7 @@ test.describe('academybugs project page', () => {
 
     await expect(page.locator('#runDone')).toBeVisible({ timeout: 15_000 });
     await expect(page.locator('.done-title')).toHaveText('EXECUÇÃO CONCLUÍDA');
-    await expect(page.locator('#repList .rep-row')).toHaveCount(5);
+    await expect(page.locator('#repList .rep-row')).toHaveCount(6);
     // the recorded test names do not change language
     await expect(page.locator('#repList .rep-row').nth(4)).toContainText('Checkout validation');
   });
