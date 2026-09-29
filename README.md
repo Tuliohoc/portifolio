@@ -105,6 +105,10 @@ artifact and publishes it. Deployments share a `concurrency` group, so two never
 publish at once. Workflows run with `contents: read`; only the publish job is
 granted `pages: write` and `id-token: write`.
 
+The first deployment enables Pages automatically. Add a repository Actions
+secret named `GH_PAGES_TOKEN` containing a fine-grained personal access token
+for this repository with Pages write access; `GITHUB_TOKEN` cannot enable Pages.
+
 ## Three things to know before editing
 
 **Bump the `?v=` token** on `site.css` and the scripts in every page whenever

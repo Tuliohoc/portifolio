@@ -19,9 +19,7 @@ jobs:
     name: Build the Pages artifact
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    # pages:write + id-token:write are here so configure-pages can turn Pages
-    # on by itself the first time, instead of failing until somebody finds the
-    # setting. The publish job holds the same pair for the actual deploy.
+    # configure-pages needs a separate token to enable Pages on the first run.
     permissions:
       contents: read
       pages: write
@@ -32,6 +30,7 @@ jobs:
       - uses: actions/configure-pages@v6
         with:
           enablement: true
+          token: ${{ secrets.GH_PAGES_TOKEN }}
 
       - uses: actions/upload-pages-artifact@v5
         with:
