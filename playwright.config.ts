@@ -1,0 +1,31 @@
+﻿import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './tests',
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 1 : 0,
+  workers: process.env.CI ? 1 : undefined,
+  // In CI: annotations on the diff, the HTML report as an artifact, and JSON,
+  // which is what scripts/ci-summary.mjs turns into the summary drawn on the
+  // run page. A green log nobody opens is not a result anybody reads.
+  reporter: process.env.CI
+    ? [['github'], ['html', { open: 'never' }], ['json', { outputFile: 'reports/results.json' }]]
+    : [['list']],
+  use: {
+    baseURL: 'http://127.0.0.1:5173',
+    trace: 'on-first-retry',
+  },
+  projects: [
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    { name: 'mobile', use: { ...devices['Pixel 7'] } },
+  ],
+  webServer: {
+    // A Node server rather than python3: the command is portable, and it does
+    // not refuse connections when the suite asks for several pages at once.
+    // See scripts/serve.mjs.
+    command: 'node scripts/serve.mjs 5173',
+    url: 'http://127.0.0.1:5173',
+    reuseExistingServer: !process.env.CI,
+  },
+});

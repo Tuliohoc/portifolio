@@ -1,0 +1,101 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# One CI run per branch. A new push cancels the run that is already in flight,
+# so two runs never test the same branch at the same time.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+# Two jobs. The browser suite draws its own result, and the summary waits for
+# it and reports the run as a whole.
+#
+#   smoke ────→ summary
+jobs:
+  smoke:
+    name: Playwright smoke suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: corepack enable && yarn install --immutable
+
+      - name: Read the Playwright version
+        id: pw
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Restore the browser from cache
+        id: browser-cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}
+
+      # No --with-deps. The runner image already has every library Chromium
+      # needs; that flag only added CJK and decorative fonts, and fetching them
+      # is what hung the run past the job timeout.
+      - name: Install Chromium
+        if: steps.browser-cache.outputs.cache-hit != 'true'
+        run: yarn playwright install chromium
+        timeout-minutes: 5
+
+      - name: Run the smoke suite
+        run: yarn playwright test --project=chromium
+
+      - name: Upload the report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+      # the machine readable version of the same run, which the summary job
+      # turns into the tables and the chart drawn on the run page
+      - name: Upload the results as JSON
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: results-json
+          path: reports/results.json
+          retention-days: 7
+
+  summary:
+    name: Run summary
+    needs: [smoke]
+    # it runs even when the suite went red, because a red run is exactly when
+    # somebody wants to see which tests fell over without downloading anything
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20
+
+      - name: Fetch the results
+        uses: actions/download-artifact@v8
+        with:
+          name: results-json
+          path: reports
+        continue-on-error: true
+
+      - name: Draw the summary
+        run: node scripts/ci-summary.mjs reports/results.json >> "$GITHUB_STEP_SUMMARY"

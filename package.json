@@ -1,0 +1,15 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "yarn@4.18.0",
+  "description": "QA Engineer portfolio for Tulio Ramos — test lab, PT/EN, AcademyBugs project",
+  "scripts": {
+    "serve": "node scripts/serve.mjs 5173",
+    "test": "playwright test",
+    "playwright:install:chromium": "playwright install chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0"
+  }
+}
