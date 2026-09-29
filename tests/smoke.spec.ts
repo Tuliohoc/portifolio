@@ -21,7 +21,7 @@ test.describe('home page', () => {
     await page.reload();
     await expect(page.getByRole('heading', { level: 1, name: 'Tulio Ramos' })).toBeVisible();
     // the name is animated letter by letter, and the space between words has to survive that
-    await expect(page.locator('#name')).toHaveText('Tulio Ramos Lopes da Silva');
+    await expect(page.locator('#name')).toHaveText('Tulio Ramos');
     await expect(page.locator('#role')).toHaveText('QA Engineer');
     await expect(page.locator('#headline')).toContainText('Test Automation');
     await expect(page.locator('.avatar img').first()).toBeVisible();
@@ -50,7 +50,7 @@ test.describe('home page', () => {
           return new Set(tops).size;
         });
       });
-      expect(linesPerWord).toEqual([1, 1, 1, 1, 1]);
+      expect(linesPerWord).toEqual([1, 1]);
     });
   }
 
@@ -159,7 +159,7 @@ test.describe('home page', () => {
 
   test('the footer carries the version', async ({ page }) => {
     await expect(page.locator('.foot .ver')).toHaveText(/^v\d+\.\d+\.\d+$/);
-    await expect(page.locator('.foot')).toContainText('Tulio Ramos Lopes da Silva');
+    await expect(page.locator('.foot')).toContainText('Tulio Ramos');
   });
 });
 
@@ -276,20 +276,45 @@ test.describe('academybugs project page', () => {
     await expect(page.locator('#repBody .rep-pre.err')).toHaveCount(0);
   });
 
-  test('Run again restarts the suite and the full report note toggles', async ({ page }) => {
+  test('Open Full Report embeds the Allure report below the run', async ({ page }) => {
+    await page.locator('#lab').scrollIntoViewIfNeeded();
+    await page.getByRole('button', { name: /run playwright tests/i }).click();
+    await expect(page.locator('#runDone')).toBeVisible({ timeout: 15_000 });
+
+    const open = page.locator('#openFull');
+    await expect(open).toHaveAttribute('aria-expanded', 'false');
+    await expect(page.locator('#allure')).toBeHidden();
+
+    await open.click();
+    await expect(page.locator('#allure')).toBeVisible();
+    await expect(open).toHaveAttribute('aria-expanded', 'true');
+    // the report is this site's own folder, loaded lazily on the first click
+    await expect(page.locator('#allureFrame')).toHaveAttribute('src', /allure\/index\.html/);
+    await expect(page.locator('#allureMeta')).toContainText('Playwright Test Suite');
+    await expect(page.locator('#allureMeta')).toContainText('22');
+
+    await page.locator('#allureClose').click();
+    await expect(page.locator('#allure')).toBeHidden();
+    await expect(open).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  test('Run again restarts the suite and closes the full report', async ({ page }) => {
     await page.locator('#lab').scrollIntoViewIfNeeded();
     await page.getByRole('button', { name: /run playwright tests/i }).click();
     await expect(page.locator('#runDone')).toBeVisible({ timeout: 15_000 });
 
     await page.locator('#openFull').click();
-    await expect(page.locator('#fullNote')).toBeVisible();
+    await expect(page.locator('#allure')).toBeVisible();
     await page.locator('#openFull').click();
-    await expect(page.locator('#fullNote')).toBeHidden();
+    await expect(page.locator('#allure')).toBeHidden();
 
     await page.locator('#runAgain').click();
     await expect(page.locator('#runner')).toBeVisible();
+    await expect(page.locator('#allure')).toBeHidden();
+    await expect(page.locator('#allureFrame')).not.toHaveAttribute('src', /allure/);
     await expect(page.locator('#runDone')).toBeHidden();
     await expect(page.locator('#runDone')).toBeVisible({ timeout: 15_000 });
+    await expect(page.locator('#openFull')).toHaveAttribute('aria-expanded', 'false');
   });
 
   test('the Cypress run carries its own numbers', async ({ page }) => {
@@ -318,6 +343,24 @@ test.describe('academybugs project page', () => {
     await expect(page.locator('#repList .rep-row')).toHaveCount(5);
     // the recorded test names do not change language
     await expect(page.locator('#repList .rep-row').nth(4)).toContainText('Checkout validation');
+  });
+
+  test('the full report follows the language', async ({ page }) => {
+    await page.locator('[data-lang="pt"]').click();
+    await expect(page.locator('#openFull')).toHaveText('Abrir Relatório Completo');
+
+    await page.locator('#lab').scrollIntoViewIfNeeded();
+    await page.getByRole('button', { name: /executar testes playwright/i }).click();
+    await expect(page.locator('#runDone')).toBeVisible({ timeout: 15_000 });
+
+    await page.locator('#openFull').click();
+    await expect(page.locator('#allure')).toBeVisible();
+    await expect(page.locator('#allure .eyebrow')).toHaveText('Relatório Completo');
+    await expect(page.locator('#allure h4')).toHaveText('Relatório Allure');
+    await expect(page.locator('#allureMeta')).toContainText('Suíte: Playwright Test Suite');
+    await expect(page.locator('#allureClose')).toHaveText('Fechar relatório');
+    // the iframe itself is an artifact and keeps its own language
+    await expect(page.locator('#allureFrame')).toHaveAttribute('src', /allure\/index\.html/);
   });
 });
 

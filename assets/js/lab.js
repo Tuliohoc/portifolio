@@ -11,6 +11,7 @@ const SUITES = {
     suite: "Playwright Test Suite",
     browser: "Chromium",
     env: "Production/Test",
+    allure: "./allure/index.html",
     total: 22, passed: 20, failed: 2, skipped: 0,
     rate: "90.9%", duration: "01:42",
     feed: ["Login with valid credentials", "Invalid login validation", "Product search", "Add product to cart", "Checkout validation"],
@@ -50,6 +51,7 @@ const SUITES = {
     suite: "Cypress UI Suite",
     browser: "Chrome",
     env: "Staging",
+    allure: "./allure/index.html",
     total: 15, passed: 14, failed: 1, skipped: 0,
     rate: "93.3%", duration: "00:58",
     feed: ["renders the product grid", "adds an item to the cart", "validates required fields", "applies a discount code", "updates the cart total"],
@@ -84,6 +86,7 @@ const SUITES = {
     suite: "REST API Suite",
     browser: "Node 20",
     env: "Production/Test",
+    allure: "./allure/index.html",
     total: 12, passed: 12, failed: 0, skipped: 0,
     rate: "100%", duration: "00:21",
     feed: ["GET /users", "POST /login", "POST /login-invalid", "GET /products", "GET /health"],
@@ -113,6 +116,7 @@ const SUITES = {
 };
 
 const RUN_MS = 4200;
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const $ = id => document.getElementById(id);
 const pick = $("suitePick");
@@ -122,6 +126,7 @@ const runner = $("runner"), runDone = $("runDone"), runSuite = $("runSuite"), ru
 const progFill = $("progFill"), progPct = $("progPct"), curTest = $("curTest");
 const repList = $("repList"), repNote = $("repNote"), repHint = $("repHint"), repBody = $("repBody");
 const runAgain = $("runAgain"), openFull = $("openFull"), fullNote = $("fullNote");
+const allure = $("allure"), allureFrame = $("allureFrame"), allureMeta = $("allureMeta"), allureClose = $("allureClose");
 
 let current = null;
 let running = false;
@@ -234,6 +239,8 @@ function run(key){
   const s = SUITES[current];
   setBusy(true);
   fullNote.hidden = true;
+  closeAllure();
+  if (allureFrame) allureFrame.removeAttribute("src");
   runDone.hidden = true;
   runner.hidden = false;
   runBadge.hidden = false;
@@ -258,11 +265,36 @@ pick.addEventListener("click", e => {
   if (button && !button.disabled) run(button.dataset.suite);
 });
 
+/* ---------- the full Allure report, opened below the run ----------
+   The report is a static folder this site serves itself: one constant per
+   suite decides where it comes from, and null keeps the text fallback for a
+   suite that has not published one. The iframe only gets its src the first
+   time the visitor asks for it, so nobody downloads Allure before clicking. */
+function drawAllureMeta(){
+  if (!current || !allureMeta) return;
+  const s = SUITES[current];
+  allureMeta.textContent = text("ab.allure.meta", { suite: s.suite, env: s.env, total: String(s.total) });
+}
+function closeAllure(){
+  if (!allure) return;
+  allure.hidden = true;
+  openFull.setAttribute("aria-expanded", "false");
+}
+
 runAgain.addEventListener("click", () => { if (current) run(current); });
 
 openFull.addEventListener("click", () => {
-  fullNote.hidden = !fullNote.hidden;
+  const s = SUITES[current];
+  if (!s || !s.allure){ fullNote.hidden = !fullNote.hidden; return; }
+  if (allure && !allure.hidden){ closeAllure(); return; }
+  if (!allureFrame.getAttribute("src")) allureFrame.src = s.allure;
+  drawAllureMeta();
+  allure.hidden = false;
+  openFull.setAttribute("aria-expanded", "true");
+  allure.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
 });
+
+if (allureClose) allureClose.addEventListener("click", () => { closeAllure(); openFull.focus(); });
 
 repList.addEventListener("click", e => {
   const row = e.target.closest(".rep-row"); if (!row) return;
@@ -292,6 +324,7 @@ if (window.I18n){
     if (running) drawRunner();
     drawReport();
     drawDetail();
+    drawAllureMeta();
   });
 }
 })();

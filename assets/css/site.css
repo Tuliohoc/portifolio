@@ -715,3 +715,16 @@ form{position:relative;background:var(--surface);border:1px solid var(--line);bo
   .rep-facts{grid-template-columns:minmax(0,1fr)}
   .hero-cta .btn{flex:1 1 auto;justify-content:center}
 }
+
+/* ---------- the full Allure report, opened under the run ---------- */
+.allure{scroll-margin-top:calc(var(--header-h) + 16px);border:1px solid var(--line);border-radius:10px;background:var(--bg);overflow:hidden}
+.allure-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;padding:16px 18px 14px}
+.allure-titles{display:grid;gap:4px}
+.allure-titles .eyebrow{margin:0}
+.allure-head h4{margin:0;font-size:1.0625rem;font-weight:650;letter-spacing:-.01em}
+.allure-head .mono-note{margin:0}
+.allure-frame iframe{display:block;width:100%;height:clamp(520px,70vh,760px);border:0;border-top:1px solid var(--line);background:#f6f7f9}
+@media (max-width:640px){
+  .allure-head{flex-direction:column;align-items:stretch}
+  .allure-frame iframe{height:70vh}
+}

@@ -1,6 +1,6 @@
 # QA Engineer portfolio
 
-Portfolio and test lab for **Tulio Ramos Lopes da Silva**, QA Engineer.
+Portfolio and test lab for **Tulio Ramos**, QA Engineer.
 Live at <https://tuliohoc.github.io/portifolio/>.
 
 Static HTML, CSS and vanilla JavaScript. No framework, no build step, no runtime

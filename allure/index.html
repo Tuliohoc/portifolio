@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; style-src 'unsafe-inline'; img-src 'self' data:">
+<title>Allure Report — AcademyBugs</title>
+<style>
+  body{margin:0;min-height:100vh;background:#f6f7f9;color:#1c2b33;
+       font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding:40px 24px}
+  .card{max-width:860px;margin:0 auto;background:#fff;border:1px solid #e2e6ea;border-radius:10px;
+        padding:32px 34px;box-shadow:0 12px 30px -22px rgba(15,35,45,.45)}
+  .kicker{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.14em;
+          text-transform:uppercase;color:#5b6b76;margin:0 0 10px}
+  h1{margin:0 0 4px;font-size:26px;letter-spacing:-.02em}
+  .env{margin:0 0 24px;color:#5b6b76;font-size:14px}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:10px;margin:0 0 24px}
+  .stat{border:1px solid #e2e6ea;border-radius:8px;padding:12px 14px;background:#fafbfc}
+  .stat b{display:block;font-size:22px;line-height:1.2}
+  .stat span{font-size:12px;color:#5b6b76;text-transform:uppercase;letter-spacing:.06em}
+  .stat.good b{color:#1d7a55}.stat.bad b{color:#b3392f}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid #edf0f2}
+  th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:#5b6b76}
+  .s-pass{color:#1d7a55;font-weight:600}.s-fail{color:#b3392f;font-weight:600}
+  .note{margin-top:26px;padding:13px 16px;border-left:3px solid #c99b1f;background:#fdf8ea;
+        border-radius:0 6px 6px 0;font-size:13.5px;color:#4c5a63}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+</style>
+</head>
+<body>
+  <main class="card">
+    <p class="kicker">Allure Report</p>
+    <h1>AcademyBugs — Test Automation</h1>
+    <p class="env">Playwright Test Suite · Chromium · Production/Test · generated 2026-09-29</p>
+
+    <div class="stats">
+      <div class="stat"><b>22</b><span>Tests</span></div>
+      <div class="stat good"><b>20</b><span>Passed</span></div>
+      <div class="stat bad"><b>2</b><span>Failed</span></div>
+      <div class="stat"><b>0</b><span>Skipped</span></div>
+      <div class="stat"><b>90.9%</b><span>Pass rate</span></div>
+      <div class="stat"><b>01:42</b><span>Duration</span></div>
+    </div>
+
+    <table>
+      <thead><tr><th>Suite</th><th>Tests</th><th>Failed</th><th>Duration</th></tr></thead>
+      <tbody>
+        <tr><td>Playwright Test Suite</td><td>22</td><td>2</td><td>01:42</td></tr>
+        <tr><td>Cypress UI Suite</td><td>15</td><td>1</td><td>00:58</td></tr>
+        <tr><td>REST API Suite</td><td>12</td><td>0</td><td>00:21</td></tr>
+      </tbody>
+    </table>
+
+    <p class="note">Placeholder standing in for the real report. Generate it from the
+      <code>academybugs-tests-</code> suite with <code>npx allure generate ./allure-results -o ./allure --clean</code>
+      and drop the output over this folder — the portfolio already points here.</p>
+  </main>
+</body>
+</html>
