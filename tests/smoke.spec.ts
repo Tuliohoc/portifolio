@@ -385,6 +385,16 @@ test.describe('asset versions', () => {
     expect(project.css).toBe(home.css);
     expect(project.js).toBe(home.js);
   });
+
+  test('every page carries the logo as its social image', async ({ page }) => {
+    for (const path of ['/', '/academybugs.html']) {
+      await page.goto(path);
+      await expect(page.locator('meta[property="og:image"]'))
+        .toHaveAttribute('content', /assets\/img\/logo\.jpeg\?v=/);
+      await expect(page.locator('meta[name="twitter:image"]'))
+        .toHaveAttribute('content', /assets\/img\/logo\.jpeg/);
+    }
+  });
 });
 
 test.describe('addresses', () => {
