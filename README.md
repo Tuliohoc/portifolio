@@ -14,7 +14,9 @@ Two pages, one shared stylesheet, and a language switch that covers all of it:
   without a reload.
 - **`academybugs.html`** — the AcademyBugs project page: the simulated run of
   three suites (Playwright, Cypress, API) and the full report it produces,
-  with steps, assertions, errors and evidence per test.
+  with steps, assertions, errors and evidence per test. "Open Full Report"
+  embeds the suite's Allure report below the run, in an iframe; a suite that
+  has no published report falls back to a text note.
 
 ## Layout
 
@@ -22,6 +24,10 @@ Two pages, one shared stylesheet, and a language switch that covers all of it:
 .
 |-- index.html                   # the landing page
 |-- academybugs.html             # the project page: run + report
+|-- allure/                      # the static Allure report the lab embeds
+|   |-- index.html               # the Playwright run
+|   |-- cypress.html             # the Cypress run
+|   \-- allure.css               # styling for both, no script at all
 |-- 404.html                     # what GitHub Pages serves for an unknown path
 |-- assets/
 |   |-- css/site.css             # design tokens first, then components
@@ -34,7 +40,7 @@ Two pages, one shared stylesheet, and a language switch that covers all of it:
 |   \-- img/                     # portrait, favicon, social icons
 |-- scripts/serve.mjs            # the static server the tests and previews run on
 |-- scripts/ci-summary.mjs       # turns the Playwright JSON report into the summary CI draws
-|-- tests/smoke.spec.ts          # Playwright suite, 32 tests x 2 projects
+|-- tests/smoke.spec.ts          # Playwright suite, 33 tests x 2 projects
 |-- .github/workflows/           # ci.yml, deploy.yml
 \-- SECURITY.md, LICENSE.md      # hardening, and all rights reserved
 ```
@@ -69,12 +75,12 @@ the reports they come from.
 
 ## Tests
 
-`yarn test` runs 32 checks twice — desktop Chromium and a Pixel 7 viewport —
-64 in total, covering the paths a visitor actually takes: navigation, the
+`yarn test` runs 33 checks twice — desktop Chromium and a Pixel 7 viewport —
+66 in total, covering the paths a visitor actually takes: navigation, the
 experience and bug accordions, the skills groups, the API tester, the PT/EN
 switch and its persistence, the theme, the lab run and its report down to a
-single failed test's evidence chips, the not found page, and the legacy
-anchors this design replaced.
+single failed test's evidence chips, the embedded full report and its language,
+the not found page, and the legacy anchors this design replaced.
 
 Everything is local: the suites the lab "runs" are recorded in `lab.js`, so a
 red run is testable without waiting on anything.
@@ -123,9 +129,11 @@ carries the link.
 **`assets/js/lab.js` holds the numbers the Test Lab shows** — 22 tests, 20
 passed, 2 failed, 90.9%, 01:42. They are recorded, not measured. When a real
 suite exists to replace them, that file and the report section of
-`academybugs.html` are where it plugs in.
+`academybugs.html` are where it plugs in. The same file also carries
+`SUITES.<suite>.allure`, the address of the report the button opens: one line
+per suite, `null` when a suite has nothing published yet.
 
 ## Licence
 
-Copyright (c) 2026 Tulio Ramos Lopes da Silva. All rights reserved. See `LICENSE.md`.
+Copyright (c) 2026 Tulio Ramos. All rights reserved. See `LICENSE.md`.
 The design, code and written content of this site are not free to reuse.

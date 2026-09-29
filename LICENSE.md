@@ -1,6 +1,6 @@
 # Licence
 
-Copyright &copy; 2026 Tulio Ramos Lopes da Silva. All rights reserved.
+Copyright &copy; 2026 Tulio Ramos. All rights reserved.
 
 This repository contains a personal portfolio website, including its design,
 layout, source code and written content.

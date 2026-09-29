@@ -3,6 +3,19 @@
 const heading = (page: Page, id: string) =>
   page.locator(`#${id} h1, #${id} h2`).first();
 
+/* Opening the full report scrolls to it smoothly, and a click dispatched while
+   that scroll is still running lands on whatever sits under the pointer. The
+   suite waits for the page to come to rest before clicking anything the scroll
+   moved. */
+const settled = async (page: Page) => {
+  await expect.poll(async () => {
+    const before = await page.evaluate(() => window.scrollY);
+    await page.waitForTimeout(150);
+    const after = await page.evaluate(() => window.scrollY);
+    return before === after;
+  }, { timeout: 5_000 }).toBe(true);
+};
+
 test.describe('home page', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
@@ -293,9 +306,21 @@ test.describe('academybugs project page', () => {
     await expect(page.locator('#allureMeta')).toContainText('Playwright Test Suite');
     await expect(page.locator('#allureMeta')).toContainText('22');
 
+    await settled(page);
     await page.locator('#allureClose').click();
     await expect(page.locator('#allure')).toBeHidden();
     await expect(open).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  test('a suite without a published report falls back to the text note', async ({ page }) => {
+    await page.locator('#lab').scrollIntoViewIfNeeded();
+    await page.getByRole('button', { name: /run api tests/i }).click();
+    await expect(page.locator('#runDone')).toBeVisible({ timeout: 15_000 });
+
+    await page.locator('#openFull').click();
+    await expect(page.locator('#fullNote')).toBeVisible();
+    await expect(page.locator('#allure')).toBeHidden();
+    await expect(page.locator('#openFull')).toHaveAttribute('aria-expanded', 'false');
   });
 
   test('Run again restarts the suite and closes the full report', async ({ page }) => {
@@ -305,9 +330,11 @@ test.describe('academybugs project page', () => {
 
     await page.locator('#openFull').click();
     await expect(page.locator('#allure')).toBeVisible();
+    await settled(page);
     await page.locator('#openFull').click();
     await expect(page.locator('#allure')).toBeHidden();
 
+    await settled(page);
     await page.locator('#runAgain').click();
     await expect(page.locator('#runner')).toBeVisible();
     await expect(page.locator('#allure')).toBeHidden();

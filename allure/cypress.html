@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Allure Report — Cypress UI Suite</title>
+<link rel="stylesheet" href="./allure.css">
+</head>
+<body>
+<header class="bar">
+  <span class="logo">ALLURE</span>
+  <span class="suite">Cypress UI Suite</span>
+  <span class="meta">Chrome · Staging · 2026-09-29 14:05</span>
+</header>
+
+<div class="shell">
+  <nav class="side" aria-label="Report sections">
+    <a href="#overview">Overview</a>
+    <a href="#tests">Tests <span class="count">15</span></a>
+    <a href="#environment">Environment</a>
+  </nav>
+
+  <main>
+    <section id="overview">
+      <h1>Overview</h1>
+      <div class="widgets">
+        <article class="widget">
+          <h2>Statistics</h2>
+          <ul class="stats">
+            <li class="total"><b>15</b><span>Total</span></li>
+            <li class="passed"><b>14</b><span>Passed</span></li>
+            <li class="failed"><b>1</b><span>Failed</span></li>
+            <li class="skipped"><b>0</b><span>Skipped</span></li>
+          </ul>
+        </article>
+
+        <article class="widget">
+          <h2>Pass rate</h2>
+          <p class="rate">93.3%</p>
+          <progress class="rate-bar" max="15" value="14">14 of 15</progress>
+          <p class="hint">14 of 15 tests passed · 1 failed</p>
+        </article>
+
+        <article class="widget">
+          <h2>Duration</h2>
+          <p class="rate">00:58</p>
+          <p class="hint">Recorded run against Staging</p>
+        </article>
+
+        <article class="widget">
+          <h2>Suites</h2>
+          <ul class="suites">
+            <li><span class="path">cypress/e2e</span><span class="tally"><b class="failed">14</b> / 15</span></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="tests">
+      <h2>Tests</h2>
+      <div class="filters" aria-hidden="true">
+        <span class="chip passed">14 passed</span>
+        <span class="chip failed">1 failed</span>
+        <span class="chip">15 total</span>
+      </div>
+      <div class="list">
+      <details class="test passed" id="renders-the-product-grid">
+        <summary>
+          <span class="st">passed</span>
+          <span class="nm">renders the product grid</span>
+          <span class="fl">cypress/e2e/catalog.cy.js</span>
+          <span class="du">1.05s</span>
+        </summary>
+        <div class="body">
+          <h4>Steps</h4>
+          <ol class="steps"><li>Visit the catalog</li><li>Wait for the grid request</li><li>Assert the product cards</li></ol>
+          <h4>Assertions</h4>
+          <pre class="assert">✓ the grid holds 8 products
+✓ every card carries a price</pre>
+          
+        </div>
+      </details>
+      <details class="test passed" id="shows-the-product-detail-page">
+        <summary>
+          <span class="st">passed</span>
+          <span class="nm">shows the product detail page</span>
+          <span class="fl">cypress/e2e/catalog.cy.js</span>
+          <span class="du">0.92s</span>
+        </summary>
+        <div class="body">
+          <h4>Steps</h4>
+          <ol class="steps"><li>Visit the catalog</li><li>Click the first card</li></ol>
+          <h4>Assertions</h4>
+          <pre class="assert">✓ the detail route opens
+✓ the price matches the card</pre>
+          
+        </div>
+      </details>
+      <details class="test passed" id="filters-the-catalog-by-category">
+        <summary>
+          <span class="st">passed</span>
+          <span class="nm">filters the catalog by category</span>
+          <span class="fl">cypress/e2e/catalog.cy.js</span>
+          <span class="du">1.13s</span>
+        </summary>
+        <div class="body">
+          <h4>Steps</h4>
+          <ol class="steps"><li>Visit the catalog</li><li>Pick a category</li><li>Wait for the request</li></ol>
+          <h4>Assertions</h4>
+          <pre class="assert">✓ only that category is listed</pre>
+          
+        </div>
+      </details>
+      <details class="test passed" id="sorts-the-catalog-by-price">
+        <summary>
+          <span class="st">passed</span>
+          <span class="nm">sorts the catalog by price</span>
+          <span class="fl">cypress/e2e/catalog.cy.js</span>
+          <span class="du">0.89s</span>
+        </summary>
+        <div class="body">
+          <h4>Steps</h4>
+          <ol class="steps"><li>Visit the catalog</li><li>Sort by price ascending</li></ol>
+          <h4>Assertions</h4>
+          <pre class="assert">✓ the prices rise from the first card to the last</pre>
+          
+        </div>
+      </details>
+      <details class="test passed" id="adds-an-item-to-the-cart">
+        <summary>
+          <span class="st">passed</span>
+          <span class="nm">adds an item to the cart</span>
+          <span class="fl">cypress/e2e/cart.cy.js</span>
+          <span class="du">1.76s</span>
+        </summary>
+        <div class="body">
+          <h4>Steps</h4>
+          <ol class="steps"><li>Visit a product</li><li>Click add to cart</li><li>Open the cart drawer</li></ol>
+          <h4>Assertions</h4>
+          <pre class="assert">✓ the cart badge shows 1
+✓ the line item matches the product</pre>
+          
+        </div>
+      </details>
+      <details class="test passed" id="removes-an-item-from-the-cart">
+        <summary>
+          <span class="st">passed</span>
+          <span class="nm">removes an item from the cart</span>
+          <span class="fl">cypress/e2e/cart.cy.js</span>
+          <span class="du">1.02s</span>
+        </summary>
+        <div class="body">
+          <h4>Steps</h4>
+          <ol class="steps"><li>Add a product</li><li>Open the cart drawer</li><li>Remove the line</li></ol>
+          <h4>Assertions</h4>
+          <pre class="assert">✓ the cart badge shows 0
+✓ the empty state is shown</pre>
+          
+        </div>
+      </details>
+      <details class="test passed" id="keeps-the-cart-after-a-reload">
+        <summary>
+          <span class="st">passed</span>
+          <span class="nm">keeps the cart after a reload</span>
+          <span class="fl">cypress/e2e/cart.cy.js</span>
+          <span class="du">1.31s</span>
+        </summary>
+        <div class="body">
+          <h4>Steps</h4>
+          <ol class="steps"><li>Add a product</li><li>Reload the page</li><li>Open the cart drawer</li></ol>
+          <h4>Assertions</h4>
+          <pre class="assert">✓ the line survives the reload</pre>
+          
+        </div>
+      </details>
+      <details class="test passed" id="updates-the-cart-total">
+        <summary>
+          <span class="st">passed</span>
+          <span class="nm">updates the cart total</span>
+          <span class="fl">cypress/e2e/cart.cy.js</span>
+          <span class="du">0.94s</span>
+        </summary>
+        <div class="body">
+          <h4>Steps</h4>
+          <ol class="steps"><li>Add a product</li><li>Change the quantity</li><li>Read the total</li></ol>
+          <h4>Assertions</h4>
+          <pre class="assert">✓ the total follows the quantity</pre>
+          
+        </div>
+      </details>
+      <details class="test passed" id="validates-required-fields">
+        <summary>
+          <span class="st">passed</span>
+          <span class="nm">validates required fields</span>
+          <span class="fl">cypress/e2e/forms.cy.js</span>
+          <span class="du">0.88s</span>
+        </summary>
+        <div class="body">
+          <h4>Steps</h4>
+          <ol class="steps"><li>Open the checkout form</li><li>Submit it empty</li><li>Assert the field errors</li></ol>
+          <h4>Assertions</h4>
+          <pre class="assert">✓ four field errors are shown
+✓ no request is sent</pre>
+          
+        </div>
+      </details>
+      <details class="test passed" id="masks-the-card-number-field">
+        <summary>
+          <span class="st">passed</span>
+          <span class="nm">masks the card number field</span>
+          <span class="fl">cypress/e2e/forms.cy.js</span>
+          <span class="du">0.77s</span>
+        </summary>
+        <div class="body">
+          <h4>Steps</h4>
+          <ol class="steps"><li>Open the payment form</li><li>Type a sixteen digit card number</li></ol>
+          <h4>Assertions</h4>
+          <pre class="assert">✓ the input shows the 4 4 4 4 mask</pre>
+          
+        </div>
+      </details>
+      <details class="test passed" id="shows-the-field-errors-on-blur">
+        <summary>
+          <span class="st">passed</span>
+          <span class="nm">shows the field errors on blur</span>
+          <span class="fl">cypress/e2e/forms.cy.js</span>
+          <span class="du">0.83s</span>
+        </summary>
+        <div class="body">
+          <h4>Steps</h4>
+          <ol class="steps"><li>Open the checkout form</li><li>Focus a required field and leave it</li></ol>
+          <h4>Assertions</h4>
+          <pre class="assert">✓ the error appears without submitting</pre>
+          
+        </div>
+      </details>
+      <details class="test failed" id="applies-a-discount-code">
+        <summary>
+          <span class="st">failed</span>
+          <span class="nm">applies a discount code</span>
+          <span class="fl">cypress/e2e/discount.cy.js</span>
+          <span class="du">1.44s</span>
+        </summary>
+        <div class="body">
+          <h4>Steps</h4>
+          <ol class="steps"><li>Open the cart</li><li>Apply discount code SAVE10</li><li>Assert the discounted total</li></ol>
+          <h4>Assertions</h4>
+          <pre class="assert">✓ the code is accepted
+✕ the total reflects the discount</pre>
+          <h4>Error</h4><pre class="err">AssertionError: expected 118.90 to equal 107.01
+
+  at Context.&lt;anonymous&gt; (cypress/e2e/discount.cy.js:24:31)</pre>
+        </div>
+      </details>
+      <details class="test passed" id="rejects-an-expired-discount-code">
+        <summary>
+          <span class="st">passed</span>
+          <span class="nm">rejects an expired discount code</span>
+          <span class="fl">cypress/e2e/discount.cy.js</span>
+          <span class="du">1.06s</span>
+        </summary>
+        <div class="body">
+          <h4>Steps</h4>
+          <ol class="steps"><li>Open the cart</li><li>Apply an expired code</li></ol>
+          <h4>Assertions</h4>
+          <pre class="assert">✓ the code is refused
+✓ the total stays unchanged</pre>
+          
+        </div>
+      </details>
+      <details class="test passed" id="submits-a-valid-order">
+        <summary>
+          <span class="st">passed</span>
+          <span class="nm">submits a valid order</span>
+          <span class="fl">cypress/e2e/checkout.cy.js</span>
+          <span class="du">1.87s</span>
+        </summary>
+        <div class="body">
+          <h4>Steps</h4>
+          <ol class="steps"><li>Fill customer information</li><li>Submit the order</li><li>Wait for the response</li></ol>
+          <h4>Assertions</h4>
+          <pre class="assert">✓ response.status() is 200
+✓ the order payload carries the cart</pre>
+          
+        </div>
+      </details>
+      <details class="test passed" id="shows-the-order-confirmation">
+        <summary>
+          <span class="st">passed</span>
+          <span class="nm">shows the order confirmation</span>
+          <span class="fl">cypress/e2e/checkout.cy.js</span>
+          <span class="du">1.55s</span>
+        </summary>
+        <div class="body">
+          <h4>Steps</h4>
+          <ol class="steps"><li>Submit the order</li><li>Wait for the confirmation</li></ol>
+          <h4>Assertions</h4>
+          <pre class="assert">✓ the confirmation view is displayed
+✓ the order number is shown</pre>
+          
+        </div>
+      </details>
+      </div>
+    </section>
+
+    <section id="environment">
+      <h2>Environment</h2>
+      <dl class="env">
+        <div><dt>Suite</dt><dd>Cypress UI Suite</dd></div>
+        <div><dt>Environment</dt><dd>Staging</dd></div>
+        <div><dt>Runtime</dt><dd>Chrome</dd></div>
+        <div><dt>Report date</dt><dd>2026-09-29 14:05</dd></div>
+      </dl>
+      <p class="note">Recorded run of the AcademyBugs environment — the same data the Test Lab replays.</p>
+    </section>
+  </main>
+</div>
+</body>
+</html>
