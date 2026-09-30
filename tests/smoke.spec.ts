@@ -130,12 +130,12 @@ test.describe('home page', () => {
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('AcademyBugs — QA Automation Project');
   });
 
-  test('every Test Lab card runs through to the AcademyBugs lab', async ({ page }) => {
+  test('every Test Lab card links to the deployed test suite', async ({ page }) => {
     await page.locator('#testlab').scrollIntoViewIfNeeded();
     const cards = page.locator('.lab-card');
     await expect(cards).toHaveCount(3);
     for (const i of [0, 1, 2]) {
-      await expect(cards.nth(i).locator('a')).toHaveAttribute('href', 'academybugs.html#lab');
+      await expect(cards.nth(i).locator('a')).toHaveAttribute('href', 'https://tuliohoc.github.io/academybugs-tests-/');
     }
   });
 
