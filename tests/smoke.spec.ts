@@ -68,10 +68,21 @@ test.describe('home page', () => {
   }
 
   test('in page navigation reaches every section', async ({ page }) => {
-    for (const section of ['home', 'about', 'experience', 'projects', 'testlab', 'contact']) {
+    for (const section of ['home', 'about', 'experience', 'projects', 'contact']) {
       await page.locator(`.nav a[href="#${section}"]`).click();
       await expect(heading(page, section)).toBeInViewport({ timeout: 10_000 });
     }
+  });
+
+  test('the Test Lab link in the navigation points at the deployed lab', async ({ page }) => {
+    await page.route('https://tuliohoc.github.io/**', route =>
+      route.fulfill({ contentType: 'text/html', body: '<!doctype html><title>lab</title>' }),
+    );
+    const lab = page.locator('.nav a').filter({ hasText: 'Test Lab' });
+    await expect(lab).toHaveAttribute('href', 'https://tuliohoc.github.io/academybugs-tests-/');
+    await expect(page.locator('.nav a[href="#testlab"]')).toHaveCount(0);
+    await lab.click();
+    await page.waitForURL('https://tuliohoc.github.io/academybugs-tests-/');
   });
 
   test('Home brings the page back to the very top', async ({ page }) => {
@@ -143,13 +154,24 @@ test.describe('home page', () => {
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('AcademyBugs — QA Automation Project');
   });
 
-  test('every Test Lab card runs through to the AcademyBugs lab', async ({ page }) => {
+  test('every Test Lab card links to the deployed test suite', async ({ page }) => {
     await page.locator('#testlab').scrollIntoViewIfNeeded();
     const cards = page.locator('.lab-card');
     await expect(cards).toHaveCount(3);
     for (const i of [0, 1, 2]) {
-      await expect(cards.nth(i).locator('a')).toHaveAttribute('href', 'academybugs.html#lab');
+      await expect(cards.nth(i).locator('a')).toHaveAttribute('href', 'https://tuliohoc.github.io/academybugs-tests-/');
     }
+  });
+
+  test('a click anywhere on a Test Lab card opens the deployed lab', async ({ page }) => {
+    await page.route('https://tuliohoc.github.io/**', route =>
+      route.fulfill({ contentType: 'text/html', body: '<!doctype html><title>lab</title>' }),
+    );
+    const card = page.locator('.lab-card').first();
+    await card.scrollIntoViewIfNeeded();
+    const box = await card.boundingBox();
+    await page.mouse.click(box!.x + box!.width / 2, box!.y + box!.height / 2);
+    await page.waitForURL('https://tuliohoc.github.io/academybugs-tests-/');
   });
 
   test('the contact block carries the three channels', async ({ page }) => {
@@ -256,8 +278,8 @@ test.describe('academybugs project page', () => {
     await expect(page.locator('#stRate')).toHaveText('90.9%');
     await expect(page.locator('#stDur')).toHaveText('01:42');
 
-    await expect(page.locator('#repList .rep-row')).toHaveCount(5);
-    await expect(page.locator('#repNote')).toContainText('5 of 22');
+    await expect(page.locator('#repList .rep-row')).toHaveCount(6);
+    await expect(page.locator('#repNote')).toContainText('6 of 22');
   });
 
   test('the failed test opens into steps, error and evidence', async ({ page }) => {
@@ -367,7 +389,7 @@ test.describe('academybugs project page', () => {
 
     await expect(page.locator('#runDone')).toBeVisible({ timeout: 15_000 });
     await expect(page.locator('.done-title')).toHaveText('EXECUÇÃO CONCLUÍDA');
-    await expect(page.locator('#repList .rep-row')).toHaveCount(5);
+    await expect(page.locator('#repList .rep-row')).toHaveCount(6);
     // the recorded test names do not change language
     await expect(page.locator('#repList .rep-row').nth(4)).toContainText('Checkout validation');
   });

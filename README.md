@@ -11,7 +11,8 @@ Two pages, one shared stylesheet, and a language switch that covers all of it:
 - **`index.html`** — hero, about, experience, skills, what I do, projects, the
   Test Lab, API testing, a bug investigation, observability, education, GitHub
   and contact. The whole interface speaks English or Portuguese, instantly and
-  without a reload.
+  without a reload. The Test Lab entry in the navigation and the whole Test Lab
+  card open the deployed lab at <https://tuliohoc.github.io/academybugs-tests-/>.
 - **`academybugs.html`** — the AcademyBugs project page: the simulated run of
   three suites (Playwright, Cypress, API) and the full report it produces,
   with steps, assertions, errors and evidence per test. "Open Full Report"

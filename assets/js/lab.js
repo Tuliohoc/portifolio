@@ -14,7 +14,7 @@ const SUITES = {
     allure: "./allure/index.html",
     total: 22, passed: 20, failed: 2, skipped: 0,
     rate: "90.9%", duration: "01:42",
-    feed: ["Login with valid credentials", "Invalid login validation", "Product search", "Add product to cart", "Checkout validation"],
+    feed: ["Login with valid credentials", "Invalid login validation", "Product search", "Add product to cart", "Checkout validation", "Registration with existing email"],
     tests: [
       { name: "Login with valid credentials", status: "passed", duration: "1.21s",
         file: "tests/auth/login.spec.ts",
@@ -44,6 +44,18 @@ const SUITES = {
           "Trace": "trace.zip · Playwright trace · 3 files",
           "Video": "video.webm · 00:04 · the last seconds of the run",
           "Error": "Error: expect(received).toBe(expected)\n\nExpected view: \"confirmation\"\nReceived view: \"error\"\n\n  at tests/checkout/checkout.spec.ts:88:31"
+        } },
+      { name: "Registration with existing email", status: "failed", duration: "1.07s",
+        file: "tests/auth/registration.spec.ts",
+        steps: ["Open the sign-up form", "Fill in an email that already exists", "Submit the form", "Assert the field error"],
+        assertions: ["✓ response.status() is 409", "✓ the form stays on the page", "✕ the inline error message is shown"],
+        expected: "An inline error should appear on the email field.",
+        actual: "The form stayed silent after the 409 response.",
+        error: "Error: expect(locator).toBeVisible()\n\nExpected: visible\nReceived: hidden\n\n  at tests/auth/registration.spec.ts:52:29",
+        evi: {
+          "Screenshot": "registration-existing-email.png · 1440×900 · captured at the failing assertion",
+          "Trace": "trace.zip · Playwright trace · 3 files",
+          "Error": "Error: expect(locator).toBeVisible()\n\nExpected: visible\nReceived: hidden\n\n  at tests/auth/registration.spec.ts:52:29"
         } }
     ]
   },
@@ -231,6 +243,7 @@ function finish(){
   drawReport();
   drawDetail();
   setBusy(false);
+  runDone.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "nearest" });
 }
 
 function run(key){
@@ -245,6 +258,7 @@ function run(key){
   runner.hidden = false;
   runBadge.hidden = false;
   drawRunner();
+  runner.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "nearest" });
   repList.innerHTML = "";
   repNote.textContent = text("ab.report.empty");
   drawDetail();
