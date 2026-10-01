@@ -55,10 +55,21 @@ test.describe('home page', () => {
   }
 
   test('in page navigation reaches every section', async ({ page }) => {
-    for (const section of ['home', 'about', 'experience', 'projects', 'testlab', 'contact']) {
+    for (const section of ['home', 'about', 'experience', 'projects', 'contact']) {
       await page.locator(`.nav a[href="#${section}"]`).click();
       await expect(heading(page, section)).toBeInViewport({ timeout: 10_000 });
     }
+  });
+
+  test('the Test Lab link in the navigation points at the deployed lab', async ({ page }) => {
+    await page.route('https://tuliohoc.github.io/**', route =>
+      route.fulfill({ contentType: 'text/html', body: '<!doctype html><title>lab</title>' }),
+    );
+    const lab = page.locator('.nav a').filter({ hasText: 'Test Lab' });
+    await expect(lab).toHaveAttribute('href', 'https://tuliohoc.github.io/academybugs-tests-/');
+    await expect(page.locator('.nav a[href="#testlab"]')).toHaveCount(0);
+    await lab.click();
+    await page.waitForURL('https://tuliohoc.github.io/academybugs-tests-/');
   });
 
   test('Home brings the page back to the very top', async ({ page }) => {
@@ -137,6 +148,17 @@ test.describe('home page', () => {
     for (const i of [0, 1, 2]) {
       await expect(cards.nth(i).locator('a')).toHaveAttribute('href', 'https://tuliohoc.github.io/academybugs-tests-/');
     }
+  });
+
+  test('a click anywhere on a Test Lab card opens the deployed lab', async ({ page }) => {
+    await page.route('https://tuliohoc.github.io/**', route =>
+      route.fulfill({ contentType: 'text/html', body: '<!doctype html><title>lab</title>' }),
+    );
+    const card = page.locator('.lab-card').first();
+    await card.scrollIntoViewIfNeeded();
+    const box = await card.boundingBox();
+    await page.mouse.click(box!.x + box!.width / 2, box!.y + box!.height / 2);
+    await page.waitForURL('https://tuliohoc.github.io/academybugs-tests-/');
   });
 
   test('the contact block carries the three channels', async ({ page }) => {

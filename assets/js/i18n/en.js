@@ -107,7 +107,7 @@ window.I18N_EN = {
   "lab.pw.sub": "E2E Tests",
   "lab.cy.sub": "UI / Functional Tests",
   "lab.api.sub": "REST API Tests",
-  "lab.run": "Run Tests",
+  "lab.open": "Open Test Lab",
 
   "api.eyebrow": "API Testing",
   "api.title": "API Testing",
