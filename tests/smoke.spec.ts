@@ -1,20 +1,11 @@
-﻿import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 
 const heading = (page: Page, id: string) =>
   page.locator(`#${id} h1, #${id} h2`).first();
 
-/* Opening the full report scrolls to it smoothly, and a click dispatched while
-   that scroll is still running lands on whatever sits under the pointer. The
-   suite waits for the page to come to rest before clicking anything the scroll
-   moved. */
-const settled = async (page: Page) => {
-  await expect.poll(async () => {
-    const before = await page.evaluate(() => window.scrollY);
-    await page.waitForTimeout(150);
-    const after = await page.evaluate(() => window.scrollY);
-    return before === after;
-  }, { timeout: 5_000 }).toBe(true);
-};
+/* Every entry point to the Test Lab points at the same published address: the
+   screen itself is not part of this site any more. */
+const TEST_LAB = 'https://tuliohoc.github.io/academybugs-tests-/';
 
 test.describe('home page', () => {
   test.beforeEach(async ({ page }) => {
@@ -72,6 +63,9 @@ test.describe('home page', () => {
       await page.locator(`.nav a[href="#${section}"]`).click();
       await expect(heading(page, section)).toBeInViewport({ timeout: 10_000 });
     }
+    // the Test Lab item leaves the site: the screen is published elsewhere
+    await expect(page.locator('.nav a[data-i18n="nav.lab"]')).toHaveAttribute('href', TEST_LAB);
+    await expect(page.locator('.nav a[data-i18n="nav.lab"]')).toHaveAttribute('rel', 'noopener noreferrer');
   });
 
   test('the Test Lab link in the navigation points at the deployed lab', async ({ page }) => {
@@ -146,12 +140,12 @@ test.describe('home page', () => {
     await expect(page.locator('#apiPane')).toContainText('401 Unauthorized');
   });
 
-  test('the project card opens the AcademyBugs suite page', async ({ page }) => {
+  test('the project card runs through to the published Test Lab', async ({ page }) => {
     await page.locator('#projects').scrollIntoViewIfNeeded();
     await page.getByRole('link', { name: /explore test suite/i }).click();
 
-    await expect(page).toHaveURL(/academybugs\.html$/);
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('AcademyBugs — QA Automation Project');
+    // academybugs.html is only the doorway now, and it hands over immediately
+    await expect(page).toHaveURL(TEST_LAB);
   });
 
   test('every Test Lab card links to the deployed test suite', async ({ page }) => {
@@ -159,8 +153,11 @@ test.describe('home page', () => {
     const cards = page.locator('.lab-card');
     await expect(cards).toHaveCount(3);
     for (const i of [0, 1, 2]) {
-      await expect(cards.nth(i).locator('a')).toHaveAttribute('href', 'https://tuliohoc.github.io/academybugs-tests-/');
+      await expect(cards.nth(i).locator('a')).toHaveAttribute('href', TEST_LAB);
+      await expect(cards.nth(i).locator('a')).toHaveAttribute('rel', 'noopener noreferrer');
     }
+    // the section says out loud where the lab is hosted
+    await expect(page.locator('#testlab')).toContainText('tuliohoc.github.io/academybugs-tests-');
   });
 
   test('a click anywhere on a Test Lab card opens the deployed lab', async ({ page }) => {
@@ -238,178 +235,25 @@ test.describe('language switch', () => {
   });
 });
 
-test.describe('academybugs project page', () => {
-  test.beforeEach(async ({ page }) => {
+test.describe('the Test Lab doorway', () => {
+  test('the page says where the lab went and links to it', async ({ page }) => {
+    const response = await page.request.get('/academybugs.html');
+    expect(response.status()).toBe(200);
+    const html = await response.text();
+
+    // it hands the visitor over on its own, and still offers the link itself
+    expect(html).toContain(`content="0; url=${TEST_LAB}"`);
+    expect(html).toContain(`href="${TEST_LAB}"`);
+    expect(html).toContain('data-i18n="ab.move.cta"');
+    expect(html).toContain('<meta name="robots" content="noindex">');
+    // the lab screen is not kept here any more
+    expect(html).not.toContain('id="runner"');
+    expect(html).not.toContain('id="suitePick"');
+  });
+
+  test('opening it hands the visitor over to the published Test Lab', async ({ page }) => {
     await page.goto('/academybugs.html');
-  });
-
-  test('renders without javascript errors and names the project', async ({ page }) => {
-    const errors: string[] = [];
-    page.on('pageerror', (error) => errors.push(error.message));
-    page.on('console', (message) => {
-      const isThirdPartyResource = message.text().includes('Failed to load resource');
-      if (message.type() === 'error' && !isThirdPartyResource) errors.push(message.text());
-    });
-
-    await page.reload();
-    await expect(page.getByRole('heading', { level: 1, name: 'AcademyBugs — QA Automation Project' })).toBeVisible();
-    await expect(page.locator('#facts')).toContainText('Application Under Test');
-    await expect(page.locator('.approach li')).toHaveCount(6);
-    expect(errors).toEqual([]);
-  });
-
-  test('the Playwright run reports 22 tests and a 90.9% pass rate', async ({ page }) => {
-    await page.locator('#lab').scrollIntoViewIfNeeded();
-    await page.getByRole('button', { name: /run playwright tests/i }).click();
-
-    const runner = page.locator('#runner');
-    await expect(runner).toBeVisible();
-    await expect(page.locator('#runSuite')).toContainText('Running Playwright Test Suite');
-    await expect(page.locator('#fBrowser')).toHaveText('Chromium');
-    await expect(page.locator('#fTests')).toHaveText('22');
-    await expect(page.locator('#progPct')).not.toHaveText('0%');
-
-    const done = page.locator('#runDone');
-    await expect(done).toBeVisible({ timeout: 15_000 });
-    await expect(page.locator('#stTotal')).toHaveText('22');
-    await expect(page.locator('#stPassed')).toHaveText('20');
-    await expect(page.locator('#stFailed')).toHaveText('2');
-    await expect(page.locator('#stSkipped')).toHaveText('0');
-    await expect(page.locator('#stRate')).toHaveText('90.9%');
-    await expect(page.locator('#stDur')).toHaveText('01:42');
-
-    await expect(page.locator('#repList .rep-row')).toHaveCount(6);
-    await expect(page.locator('#repNote')).toContainText('6 of 22');
-  });
-
-  test('the failed test opens into steps, error and evidence', async ({ page }) => {
-    await page.locator('#lab').scrollIntoViewIfNeeded();
-    await page.getByRole('button', { name: /run playwright tests/i }).click();
-    await expect(page.locator('#runDone')).toBeVisible({ timeout: 15_000 });
-
-    await page.locator('#repList .rep-row').nth(4).click();
-    await expect(page.locator('#repBody')).toContainText('Checkout validation');
-    await expect(page.locator('#repBody .st-label')).toContainText('Failed');
-    await expect(page.locator('#repBody .rep-steps li')).toHaveCount(5);
-    await expect(page.locator('#repBody .rep-pre.err')).toContainText('expect(received)');
-
-    await page.getByRole('button', { name: 'Screenshot' }).click();
-    await expect(page.locator('#repBody .rep-pre').last()).toContainText('checkout-validation.png');
-
-    await page.getByRole('button', { name: 'Close' }).click();
-    await expect(page.locator('#repHint')).toBeVisible();
-  });
-
-  test('a passing test shows its steps without an error block', async ({ page }) => {
-    await page.locator('#lab').scrollIntoViewIfNeeded();
-    await page.getByRole('button', { name: /run playwright tests/i }).click();
-    await expect(page.locator('#runDone')).toBeVisible({ timeout: 15_000 });
-
-    await page.locator('#repList .rep-row').first().click();
-    await expect(page.locator('#repBody')).toContainText('Login with valid credentials');
-    await expect(page.locator('#repBody .st-label')).toContainText('Passed');
-    await expect(page.locator('#repBody .rep-pre.err')).toHaveCount(0);
-  });
-
-  test('Open Full Report embeds the Allure report below the run', async ({ page }) => {
-    await page.locator('#lab').scrollIntoViewIfNeeded();
-    await page.getByRole('button', { name: /run playwright tests/i }).click();
-    await expect(page.locator('#runDone')).toBeVisible({ timeout: 15_000 });
-
-    const open = page.locator('#openFull');
-    await expect(open).toHaveAttribute('aria-expanded', 'false');
-    await expect(page.locator('#allure')).toBeHidden();
-
-    await open.click();
-    await expect(page.locator('#allure')).toBeVisible();
-    await expect(open).toHaveAttribute('aria-expanded', 'true');
-    // the report is this site's own folder, loaded lazily on the first click
-    await expect(page.locator('#allureFrame')).toHaveAttribute('src', /allure\/index\.html/);
-    await expect(page.locator('#allureMeta')).toContainText('Playwright Test Suite');
-    await expect(page.locator('#allureMeta')).toContainText('22');
-
-    await settled(page);
-    await page.locator('#allureClose').click();
-    await expect(page.locator('#allure')).toBeHidden();
-    await expect(open).toHaveAttribute('aria-expanded', 'false');
-  });
-
-  test('a suite without a published report falls back to the text note', async ({ page }) => {
-    await page.locator('#lab').scrollIntoViewIfNeeded();
-    await page.getByRole('button', { name: /run api tests/i }).click();
-    await expect(page.locator('#runDone')).toBeVisible({ timeout: 15_000 });
-
-    await page.locator('#openFull').click();
-    await expect(page.locator('#fullNote')).toBeVisible();
-    await expect(page.locator('#allure')).toBeHidden();
-    await expect(page.locator('#openFull')).toHaveAttribute('aria-expanded', 'false');
-  });
-
-  test('Run again restarts the suite and closes the full report', async ({ page }) => {
-    await page.locator('#lab').scrollIntoViewIfNeeded();
-    await page.getByRole('button', { name: /run playwright tests/i }).click();
-    await expect(page.locator('#runDone')).toBeVisible({ timeout: 15_000 });
-
-    await page.locator('#openFull').click();
-    await expect(page.locator('#allure')).toBeVisible();
-    await settled(page);
-    await page.locator('#openFull').click();
-    await expect(page.locator('#allure')).toBeHidden();
-
-    await settled(page);
-    await page.locator('#runAgain').click();
-    await expect(page.locator('#runner')).toBeVisible();
-    await expect(page.locator('#allure')).toBeHidden();
-    await expect(page.locator('#allureFrame')).not.toHaveAttribute('src', /allure/);
-    await expect(page.locator('#runDone')).toBeHidden();
-    await expect(page.locator('#runDone')).toBeVisible({ timeout: 15_000 });
-    await expect(page.locator('#openFull')).toHaveAttribute('aria-expanded', 'false');
-  });
-
-  test('the Cypress run carries its own numbers', async ({ page }) => {
-    await page.locator('#lab').scrollIntoViewIfNeeded();
-    await page.getByRole('button', { name: /run cypress tests/i }).click();
-    await expect(page.locator('#runSuite')).toContainText('Cypress UI Suite');
-
-    await expect(page.locator('#runDone')).toBeVisible({ timeout: 15_000 });
-    await expect(page.locator('#stTotal')).toHaveText('15');
-    await expect(page.locator('#stPassed')).toHaveText('14');
-    await expect(page.locator('#stFailed')).toHaveText('1');
-    await expect(page.locator('#stRate')).toHaveText('93.3%');
-  });
-
-  test('the lab interface follows the language', async ({ page }) => {
-    await page.locator('[data-lang="pt"]').click();
-    await expect(page.locator('#report h2')).toHaveText('Relatório de Testes');
-    await expect(page.locator('#repNote')).toContainText('Execute uma suíte');
-
-    await page.locator('#lab').scrollIntoViewIfNeeded();
-    await page.getByRole('button', { name: /executar testes playwright/i }).click();
-    await expect(page.locator('#runSuite')).toContainText('▶ Executando Playwright Test Suite');
-
-    await expect(page.locator('#runDone')).toBeVisible({ timeout: 15_000 });
-    await expect(page.locator('.done-title')).toHaveText('EXECUÇÃO CONCLUÍDA');
-    await expect(page.locator('#repList .rep-row')).toHaveCount(6);
-    // the recorded test names do not change language
-    await expect(page.locator('#repList .rep-row').nth(4)).toContainText('Checkout validation');
-  });
-
-  test('the full report follows the language', async ({ page }) => {
-    await page.locator('[data-lang="pt"]').click();
-    await expect(page.locator('#openFull')).toHaveText('Abrir Relatório Completo');
-
-    await page.locator('#lab').scrollIntoViewIfNeeded();
-    await page.getByRole('button', { name: /executar testes playwright/i }).click();
-    await expect(page.locator('#runDone')).toBeVisible({ timeout: 15_000 });
-
-    await page.locator('#openFull').click();
-    await expect(page.locator('#allure')).toBeVisible();
-    await expect(page.locator('#allure .eyebrow')).toHaveText('Relatório Completo');
-    await expect(page.locator('#allure h4')).toHaveText('Relatório Allure');
-    await expect(page.locator('#allureMeta')).toContainText('Suíte: Playwright Test Suite');
-    await expect(page.locator('#allureClose')).toHaveText('Fechar relatório');
-    // the iframe itself is an artifact and keeps its own language
-    await expect(page.locator('#allureFrame')).toHaveAttribute('src', /allure\/index\.html/);
+    await expect(page).toHaveURL(TEST_LAB);
   });
 });
 
@@ -430,19 +274,26 @@ test.describe('asset versions', () => {
     expect(home.css).toMatch(/\?v=/);
     expect(home.js).toMatch(/\?v=/);
 
-    const project = await versions('/academybugs.html');
-    expect(project.css).toBe(home.css);
-    expect(project.js).toBe(home.js);
+    // the doorway is read from its markup too: opening it sends you elsewhere
+    const html = await (await page.request.get('/academybugs.html')).text();
+    const css = html.match(/href="(assets\/css\/site\.css\?v=[^"]+)"/)?.[1];
+    const js = html.match(/src="(assets\/js\/theme\.js\?v=[^"]+)"/)?.[1];
+    expect(css).toBe(home.css);
+    expect(js).toBe(home.js);
   });
 
-  test('every page carries the logo as its social image', async ({ page }) => {
-    for (const path of ['/', '/academybugs.html']) {
-      await page.goto(path);
-      await expect(page.locator('meta[property="og:image"]'))
-        .toHaveAttribute('content', /assets\/img\/logo\.jpeg\?v=/);
-      await expect(page.locator('meta[name="twitter:image"]'))
-        .toHaveAttribute('content', /assets\/img\/logo\.jpeg/);
-    }
+  test('every page carries the logo as its social image', async ({ page, request }) => {
+    await page.goto('/');
+    await expect(page.locator('meta[property="og:image"]'))
+      .toHaveAttribute('content', /assets\/img\/logo\.jpeg\?v=/);
+    await expect(page.locator('meta[name="twitter:image"]'))
+      .toHaveAttribute('content', /assets\/img\/logo\.jpeg/);
+
+    // the doorway is read from its own markup: opening it sends you elsewhere
+    const response = await request.get('/academybugs.html');
+    const html = await response.text();
+    expect(html).toMatch(/property="og:image" content="[^"]*assets\/img\/logo\.jpeg\?v=/);
+    expect(html).toMatch(/name="twitter:image" content="[^"]*assets\/img\/logo\.jpeg/);
   });
 });
 
@@ -468,3 +319,4 @@ test.describe('addresses', () => {
     });
   }
 });
+

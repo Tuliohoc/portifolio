@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap&amp;subset=latin-ext">
-<link rel="stylesheet" href="assets/css/site.css?v=2026093001">
+<link rel="stylesheet" href="assets/css/site.css?v=2026100101">
 </head>
 <body>
 <a class="skip" href="#about" data-i18n="skip">Skip to content</a>
@@ -46,7 +46,7 @@
       <a href="#about" data-i18n="nav.about">About</a>
       <a href="#experience" data-i18n="nav.experience">Experience</a>
       <a href="#projects" data-i18n="nav.projects">Projects</a>
-      <a href="https://tuliohoc.github.io/academybugs-tests-/" data-i18n="nav.lab">Test Lab</a>
+      <a href="https://tuliohoc.github.io/academybugs-tests-/" rel="noopener noreferrer" data-i18n="nav.lab">Test Lab</a>
       <a href="#contact" data-i18n="nav.contact">Contact</a>
     </nav>
     <div class="tools">
@@ -257,8 +257,8 @@
         <div class="term-top" aria-hidden="true"><i></i><i></i><i></i></div>
         <div class="cmd">$ npx playwright test</div>
         <div class="row"><b>Application under test</b><span>AcademyBugs</span></div>
-        <div class="row"><b>Playwright</b><span>E2E · 22 tests</span></div>
-        <div class="row"><b>Cypress</b><span>UI / Functional · 15 tests</span></div>
+        <div class="row"><b>Playwright</b><span>E2E · 15 tests</span></div>
+        <div class="row"><b>Cypress</b><span>UI / Functional · 9 tests</span></div>
         <div class="row"><b>REST API</b><span>12 tests</span></div>
         <div class="row"><b>Evidence</b><span>screenshots · videos · traces</span></div>
       </div>
@@ -273,25 +273,26 @@
       <p class="eyebrow" data-i18n="lab.eyebrow">Test Lab</p>
       <h2 class="h2" id="lab-h" data-i18n="lab.title">Interactive Test Lab</h2>
       <p class="intro" data-i18n="lab.intro">Run automated tests and explore the results, evidence and reports.</p>
+      <p class="intro tight hosted" data-i18n="lab.hosted">The Test Lab lives in the test suite repository · tuliohoc.github.io/academybugs-tests-</p>
     </div>
     <div class="lab-grid">
       <article class="lab-card rv">
-        <span class="lab-mark" aria-hidden="true">PW</span>
+        <span class="lab-mark" aria-hidden="true"><img src="assets/img/playwright.svg" alt="" width="26" height="26"></span>
         <h3>Playwright</h3>
         <p data-i18n="lab.pw.sub">E2E Tests</p>
-        <a class="btn btn-p" href="https://tuliohoc.github.io/academybugs-tests-/"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><use href="#i-out"/></svg><span data-i18n="lab.open">Open Test Lab</span></a>
+        <a class="btn btn-p" href="https://tuliohoc.github.io/academybugs-tests-/" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><use href="#i-out"/></svg><span data-i18n="lab.open">Open Test Lab</span></a>
       </article>
       <article class="lab-card rv">
-        <span class="lab-mark" aria-hidden="true">CY</span>
+        <span class="lab-mark" aria-hidden="true"><img src="assets/img/cypress.svg" alt="" width="26" height="26"></span>
         <h3>Cypress</h3>
         <p data-i18n="lab.cy.sub">UI / Functional Tests</p>
-        <a class="btn btn-p" href="https://tuliohoc.github.io/academybugs-tests-/"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><use href="#i-out"/></svg><span data-i18n="lab.open">Open Test Lab</span></a>
+        <a class="btn btn-p" href="https://tuliohoc.github.io/academybugs-tests-/" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><use href="#i-out"/></svg><span data-i18n="lab.open">Open Test Lab</span></a>
       </article>
       <article class="lab-card rv">
-        <span class="lab-mark" aria-hidden="true">API</span>
+        <span class="lab-mark pair" aria-hidden="true"><img src="assets/img/postman.svg" alt="" width="22" height="22"><img src="assets/img/bruno.svg" alt="" width="22" height="22"></span>
         <h3>API</h3>
         <p data-i18n="lab.api.sub">REST API Tests</p>
-        <a class="btn btn-p" href="https://tuliohoc.github.io/academybugs-tests-/"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><use href="#i-out"/></svg><span data-i18n="lab.open">Open Test Lab</span></a>
+        <a class="btn btn-p" href="https://tuliohoc.github.io/academybugs-tests-/" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><use href="#i-out"/></svg><span data-i18n="lab.open">Open Test Lab</span></a>
       </article>
     </div>
   </div>
@@ -451,9 +452,9 @@
   </div>
 </footer>
 
-<script src="assets/js/i18n/en.js?v=2026093001" defer></script>
-<script src="assets/js/i18n/pt.js?v=2026093001" defer></script>
-<script src="assets/js/i18n/index.js?v=2026093001" defer></script>
-<script src="assets/js/main.js?v=2026093001" defer></script>
+<script src="assets/js/i18n/en.js?v=2026100101" defer></script>
+<script src="assets/js/i18n/pt.js?v=2026100101" defer></script>
+<script src="assets/js/i18n/index.js?v=2026100101" defer></script>
+<script src="assets/js/main.js?v=2026100101" defer></script>
 </body>
 </html>

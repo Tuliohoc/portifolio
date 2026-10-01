@@ -1,34 +1,34 @@
 # QA Engineer portfolio
 
-Portfolio and test lab for **Tulio Ramos**, QA Engineer.
+Portfolio for **Tulio Ramos**, QA Engineer.
 Live at <https://tuliohoc.github.io/portifolio/>.
 
 Static HTML, CSS and vanilla JavaScript. No framework, no build step, no runtime
-dependencies. The only third party request the page makes is to Google Fonts.
+dependencies. The only third party request the pages make is to Google Fonts.
+
+The **Test Lab does not live here**: it is published from the test suite
+repository at <https://tuliohoc.github.io/academybugs-tests-/>, and every entry
+point in this site — the nav item, the three cards, the project card — links
+straight to it. This repository keeps the doorway, not the screen.
 
 Two pages, one shared stylesheet, and a language switch that covers all of it:
 
 - **`index.html`** — hero, about, experience, skills, what I do, projects, the
-  Test Lab, API testing, a bug investigation, observability, education, GitHub
-  and contact. The whole interface speaks English or Portuguese, instantly and
-  without a reload. The Test Lab entry in the navigation and the whole Test Lab
-  card open the deployed lab at <https://tuliohoc.github.io/academybugs-tests-/>.
-- **`academybugs.html`** — the AcademyBugs project page: the simulated run of
-  three suites (Playwright, Cypress, API) and the full report it produces,
-  with steps, assertions, errors and evidence per test. "Open Full Report"
-  embeds the suite's Allure report below the run, in an iframe; a suite that
-  has no published report falls back to a text note.
+  Test Lab section, API testing, a bug investigation, observability, education,
+  GitHub and contact. The whole interface speaks English or Portuguese,
+  instantly and without a reload. The Test Lab entry in the navigation and the
+  whole Test Lab card open the deployed lab at
+  <https://tuliohoc.github.io/academybugs-tests-/>.
+- **`academybugs.html`** — the doorway to the Test Lab: it states where the lab
+  moved and hands the visitor over to it, with a link for whoever lands there
+  with redirects turned off.
 
 ## Layout
 
 ```
 .
 |-- index.html                   # the landing page
-|-- academybugs.html             # the project page: run + report
-|-- allure/                      # the static Allure report the lab embeds
-|   |-- index.html               # the Playwright run
-|   |-- cypress.html             # the Cypress run
-|   \-- allure.css               # styling for both, no script at all
+|-- academybugs.html             # the doorway: redirects to the Test Lab
 |-- 404.html                     # what GitHub Pages serves for an unknown path
 |-- assets/
 |   |-- css/site.css             # design tokens first, then components
@@ -37,11 +37,10 @@ Two pages, one shared stylesheet, and a language switch that covers all of it:
 |   |-- js/i18n/index.js         # the i18n engine: apply, switch, persist
 |   |-- js/theme.js              # colour theme, restores before first paint
 |   |-- js/main.js               # nav, name split, accordions, API tester
-|   |-- js/lab.js                # suite runs and the report they produce
 |   \-- img/                     # portrait, favicon, social icons
 |-- scripts/serve.mjs            # the static server the tests and previews run on
 |-- scripts/ci-summary.mjs       # turns the Playwright JSON report into the summary CI draws
-|-- tests/smoke.spec.ts          # Playwright suite, 33 tests x 2 projects
+|-- tests/smoke.spec.ts          # Playwright suite, 28 tests x 2 projects
 |-- .github/workflows/           # ci.yml, deploy.yml
 \-- SECURITY.md, LICENSE.md      # hardening, and all rights reserved
 ```
@@ -65,7 +64,7 @@ few lines of Node with no dependencies, and it answers an unknown path with
 Every translatable string carries a key (`data-i18n="hero.role"`) and lives in
 one of the two dictionaries. `assets/js/i18n/index.js` fills the page from the
 dictionary in use, updates the title and meta tags, and notifies the scripted
-content — the lab runner, the report — so it can redraw itself. The choice
+content — the bug report, the API tester — so it can redraw itself. The choice
 persists in `localStorage` and defaults to Portuguese when the browser asks
 for it.
 
@@ -76,15 +75,18 @@ the reports they come from.
 
 ## Tests
 
-`yarn test` runs 33 checks twice — desktop Chromium and a Pixel 7 viewport —
-66 in total, covering the paths a visitor actually takes: navigation, the
+`yarn test` runs 28 checks twice — desktop Chromium and a Pixel 7 viewport —
+56 in total, covering the paths a visitor actually takes: navigation, the
 experience and bug accordions, the skills groups, the API tester, the PT/EN
-switch and its persistence, the theme, the lab run and its report down to a
-single failed test's evidence chips, the embedded full report and its language,
-the not found page, and the legacy anchors this design replaced.
+switch and its persistence, the theme, the Test Lab doorway and where it hands
+you over to, the not found page, and the legacy anchors this design replaced.
 
-Everything is local: the suites the lab "runs" are recorded in `lab.js`, so a
-red run is testable without waiting on anything.
+The doorway at `academybugs.html` is one screen deep: it says the lab moved,
+offers the link for anyone who lands there without following the redirect, and
+hands the browser over to the published Test Lab. Every entry point in this
+site — the nav item, the three cards, the project card — carries the same
+address, `https://tuliohoc.github.io/academybugs-tests-/`, and the tests check
+that they all do.
 
 ## CI
 
@@ -127,12 +129,17 @@ replacement whose cut outs are drawn as white shapes rather than as real holes
 will fill in solid under a mask. If either file goes missing the plain word
 carries the link.
 
-**`assets/js/lab.js` holds the numbers the Test Lab shows** — 22 tests, 20
-passed, 2 failed, 90.9%, 01:42. They are recorded, not measured. When a real
-suite exists to replace them, that file and the report section of
-`academybugs.html` are where it plugs in. The same file also carries
-`SUITES.<suite>.allure`, the address of the report the button opens: one line
-per suite, `null` when a suite has nothing published yet.
+**The Test Lab is published from the `academybugs-tests-` suite repository**,
+at <https://tuliohoc.github.io/academybugs-tests-/>, and this site only points
+at it: the nav item, the three cards and the project card all carry that
+address, and `academybugs.html` redirects there. The numbers the lab shows are
+recorded, not measured: they come out of the real Allure run against
+`academybugs.com`, and the workflow that publishes the lab rewrites
+`site/assets/js/lab.js` from each run (`scripts/lab-data.mjs` then
+`scripts/sync-lab.mjs`), so the page can never drift away from the report it
+sits beside. `SUITES.<suite>.allure` in that same file is the address of the
+report the button opens — one line per suite, pointing at the published
+report, and `null` when a suite has nothing published yet.
 
 ## Licence
 

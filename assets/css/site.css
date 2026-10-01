@@ -479,6 +479,9 @@ form{position:relative;background:var(--surface);border:1px solid var(--line);bo
 .orbit .dot.d3{--s:34s;--r:49%;--c:var(--line-strong)}
 .rings-key i.dashed{border-style:dashed}
 .intro.tight{margin-top:10px}
+/* the line that says where the lab lives now is a caption, not body copy:
+   centred, never justified, and the address inside it never breaks in half */
+.sec-head .hosted{text-align:center;hyphens:none;-webkit-hyphens:none}
 .tags-spacer{height:16px}
 .g-auto{--c:var(--pri)}
 .g-ai{--c:var(--gold-fill)}
@@ -536,7 +539,10 @@ form{position:relative;background:var(--surface);border:1px solid var(--line);bo
 .lab-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;max-width:960px;margin-inline:auto}
 .lab-card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:30px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;transition:border-color .2s var(--ease),transform .3s var(--ease)}
 .lab-card:hover{border-color:var(--pri);transform:translateY(-4px)}
-.lab-mark{width:52px;height:52px;border-radius:12px;display:grid;place-items:center;font-family:var(--mono);font-size:.8125rem;font-weight:500;color:var(--pri);background:var(--pri-wash);border:1px solid var(--line)}
+.lab-mark{min-width:52px;height:52px;border-radius:12px;padding-inline:13px;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--panel);border:1px solid var(--panel-line)}
+.lab-mark img{display:block;flex:none;width:26px;height:26px}
+.lab-mark.pair{padding-inline:12px}
+.lab-mark.pair img{width:22px;height:22px}
 .lab-card h3{font-size:1.25rem;font-weight:650}
 .lab-card p{color:var(--soft);font-family:var(--mono);font-size:.75rem;letter-spacing:.04em}
 .lab-card .btn{margin-top:auto;width:100%;justify-content:center}

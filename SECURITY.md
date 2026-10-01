@@ -27,8 +27,10 @@ other site data.
   allows only the font files Google serves. Everything else — images, objects,
   connections, frames — is restricted to `self` or `data:` for images.
 - `connect-src 'none'` and `frame-src 'none'`: the pages open no connections
-  of their own and frame nothing. `form-action 'none'` means nothing can be
-  posted anywhere, since there is no form.
+  of their own and frame nothing. The Test Lab lives on another site and is
+  reached through ordinary links, so nothing about it is pulled in until the
+  visitor asks for it. `form-action 'none'` means nothing can be posted
+  anywhere, since there is no form.
 - `404.html` is served as a standalone fallback and carries its own, equally
   narrow policy (`style-src 'unsafe-inline'` for its single inline style block).
 - No third party analytics, trackers or advertising scripts.
