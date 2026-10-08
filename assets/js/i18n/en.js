@@ -45,7 +45,7 @@ window.I18N_EN = {
   "job.playpag.p1": "Working with software quality across functional testing, regression testing, test automation and technical investigation.",
   "job.playpag.p2": "Creating and maintaining automated tests using Cypress and Playwright, validating APIs and investigating application behavior through logs, databases and observability tools.",
   "job.playpag.p3": "Working alongside development and product teams to identify, reproduce and investigate defects throughout the software lifecycle.",
-  "job.embarque.role": "Software Development Intern",
+  "job.embarque.role": "Software Development Intern | QA & Software Testing",
   "job.embarque.when": "",
   "job.embarque.p1": "Experience in software development environments, contributing to technical solutions and strengthening my understanding of application development and software engineering practices.",
   "job.right.role": "Squad Lead",

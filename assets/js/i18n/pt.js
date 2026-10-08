@@ -45,7 +45,7 @@ window.I18N_PT = {
   "job.playpag.p1": "Trabalhando com qualidade de software em testes funcionais, testes de regressão, automação de testes e investigação técnica.",
   "job.playpag.p2": "Criando e mantendo testes automatizados com Cypress e Playwright, validando APIs e investigando o comportamento da aplicação por meio de logs, bancos de dados e ferramentas de observabilidade.",
   "job.playpag.p3": "Trabalhando junto com os times de desenvolvimento e produto para identificar, reproduzir e investigar defeitos ao longo do ciclo de vida do software.",
-  "job.embarque.role": "Estágio em Desenvolvimento de Software",
+  "job.embarque.role": "Estágio em Desenvolvimento de Software | QA & Software Testing",
   "job.embarque.when": "",
   "job.embarque.p1": "Experiência em ambientes de desenvolvimento de software, contribuindo com soluções técnicas e fortalecendo meu entendimento de desenvolvimento de aplicações e práticas de engenharia de software.",
   "job.right.role": "Squad Lead",
