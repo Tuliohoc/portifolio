@@ -190,6 +190,10 @@ section.graphite{
 .job-body>div{overflow:hidden}
 .job-head[aria-expanded="true"]+.job-body{grid-template-rows:minmax(0,1fr)}
 .job-body p{margin:0 18px;color:var(--soft);font-size:.9375rem;border-top:1px solid var(--line);padding-top:14px}
+/* one bullet per line, same rhythm as the intro paragraph above it */
+.job-body ul.bul{margin:0 18px;padding:14px 0 4px;border-top:1px solid var(--line);list-style:none;color:var(--soft);font-size:.9375rem}
+.job-body ul.bul li{position:relative;padding:5px 0 5px 18px;line-height:1.55}
+.job-body ul.bul li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--pri)}
 .tags{display:flex;flex-wrap:wrap;gap:6px;padding:12px 18px 18px;margin:0;list-style:none}
 .tags li{font-family:var(--mono);font-size:.6875rem;color:var(--slate);background:var(--slate-wash);padding:3px 8px;border-radius:4px}
 .tags li.ai{color:var(--gold);background:var(--gold-wash)}
@@ -516,7 +520,6 @@ form{position:relative;background:var(--surface);border:1px solid var(--line);bo
 
 /* experience */
 .job-track{display:block;font-family:var(--mono);font-size:.6875rem;letter-spacing:.04em;color:var(--gold);margin-top:5px}
-.job-body p.job-p{border-top:0;padding-top:0;margin-top:10px}
 
 /* skills */
 .skill-groups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}

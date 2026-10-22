@@ -93,11 +93,11 @@ test.describe('home page', () => {
     await expect(playpag).toHaveAttribute('aria-expanded', 'true');
     await expect(page.locator('#job-playpag')).toContainText('Cypress and Playwright');
 
-    const right = page.locator('#jobh-right');
-    await expect(right).toHaveAttribute('aria-expanded', 'false');
-    await right.click();
-    await expect(right).toHaveAttribute('aria-expanded', 'true');
-    await expect(page.locator('#job-right')).toContainText('N1 to N2 Technical Support');
+    const flow = page.locator('#jobh-flow');
+    await expect(flow).toHaveAttribute('aria-expanded', 'false');
+    await flow.click();
+    await expect(flow).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.locator('#job-flow')).toContainText('N1 to N2 Technical Support');
     await expect(page.locator('.job-track')).toContainText('N1 Support → N2 Support → Squad Lead');
   });
 
