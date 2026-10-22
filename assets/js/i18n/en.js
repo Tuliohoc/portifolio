@@ -49,12 +49,6 @@ window.I18N_EN = {
   "job.omninex.b4": "Supported automated test execution and software validation in CI/CD workflows.",
   "job.playpag.role": "QA Analyst",
   "job.playpag.when": "Oct 2025 — Present",
-<<<<<<< HEAD
-  "job.playpag.p1": "Working with software quality across functional testing, regression testing, test automation and technical investigation.",
-  "job.playpag.p2": "Creating and maintaining automated tests using Cypress and Playwright, validating APIs and investigating application behavior through logs, databases and observability tools.",
-  "job.playpag.p3": "Working alongside development and product teams to identify, reproduce and investigate defects throughout the software lifecycle.",
-  "job.embarque.role": "Software Development Intern | QA & Software Testing",
-=======
   "job.playpag.p1": "QA Analyst focusing on software quality, test automation, API validation and backend investigation in an Agile environment.",
   "job.playpag.b1": "Designed and executed functional, regression, integration and exploratory tests.",
   "job.playpag.b2": "Automated end-to-end and regression scenarios using Cypress and Playwright.",
@@ -63,8 +57,7 @@ window.I18N_EN = {
   "job.playpag.b5": "Investigated backend issues using PostgreSQL, MongoDB, application logs and Datadog.",
   "job.playpag.b6": "Identified, documented and tracked defects using Jira and Azure DevOps, analyzing requirements and acceptance criteria to spot risks, edge cases and potential defects.",
   "job.playpag.b7": "Collaborated closely with Developers and Product teams throughout the development and bug-fixing lifecycle, contributing to QA improvements, test documentation and release validation.",
-  "job.embarque.role": "Software Development Intern",
->>>>>>> 0171351 (Update tests and configurations for the playwright)
+  "job.embarque.role": "Software Development Intern | QA & Software Testing",
   "job.embarque.when": "",
   "job.embarque.p1": "Software Development Intern working on web applications and internal systems, from requirements and feature delivery to testing and code quality.",
   "job.embarque.b1": "Developed and improved web applications and internal systems based on functional and technical requirements.",

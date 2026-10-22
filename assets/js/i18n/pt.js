@@ -49,12 +49,6 @@ window.I18N_PT = {
   "job.omninex.b4": "Apoio à execução automatizada de testes e à validação de software em fluxos de CI/CD.",
   "job.playpag.role": "QA Analyst",
   "job.playpag.when": "Out 2025 — Presente",
-<<<<<<< HEAD
-  "job.playpag.p1": "Trabalhando com qualidade de software em testes funcionais, testes de regressão, automação de testes e investigação técnica.",
-  "job.playpag.p2": "Criando e mantendo testes automatizados com Cypress e Playwright, validando APIs e investigando o comportamento da aplicação por meio de logs, bancos de dados e ferramentas de observabilidade.",
-  "job.playpag.p3": "Trabalhando junto com os times de desenvolvimento e produto para identificar, reproduzir e investigar defeitos ao longo do ciclo de vida do software.",
-  "job.embarque.role": "Estágio em Desenvolvimento de Software | QA & Software Testing",
-=======
   "job.playpag.p1": "Atuo como QA Analyst com foco em qualidade de software, automação de testes, validação de API e investigação de backend em um ambiente ágil.",
   "job.playpag.b1": "Projetei e executei testes funcionais, de regressão, de integração e exploratórios.",
   "job.playpag.b2": "Automatizei cenários end-to-end e de regressão usando Cypress e Playwright.",
@@ -63,8 +57,7 @@ window.I18N_PT = {
   "job.playpag.b5": "Investiguei problemas de backend usando PostgreSQL, MongoDB, logs da aplicação e Datadog.",
   "job.playpag.b6": "Identifiquei, documentei e acompanhei defeitos usando Jira e Azure DevOps, analisando requisitos e critérios de aceite para antecipar riscos, casos extremos e possíveis defeitos.",
   "job.playpag.b7": "Colaborei de perto com os times de Desenvolvimento e Produto ao longo do ciclo de desenvolvimento e correção, contribuindo com melhorias de QA, documentação de testes e validação de releases.",
-  "job.embarque.role": "Estágio em Desenvolvimento de Software",
->>>>>>> 0171351 (Update tests and configurations for the playwright)
+  "job.embarque.role": "Estágio em Desenvolvimento de Software | QA & Software Testing",
   "job.embarque.when": "",
   "job.embarque.p1": "Estágio em Desenvolvimento de Software trabalhando em aplicações web e sistemas internos, desde requisitos e entrega de funcionalidades até testes e qualidade de código.",
   "job.embarque.b1": "Desenvolvi e melhorei aplicações web e sistemas internos com base em requisitos funcionais e técnicos.",
