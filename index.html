@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap&amp;subset=latin-ext">
-<link rel="stylesheet" href="assets/css/site.css?v=2026100801">
+<link rel="stylesheet" href="assets/css/site.css?v=2026102901">
 </head>
 <body>
 <a class="skip" href="#about" data-i18n="skip">Skip to content</a>
@@ -158,8 +158,9 @@
                 <li data-i18n="job.omninex.b2">Developed web tests with Selenium WebDriver and Python, using the Page Object Model (POM) pattern and explicit waits.</li>
                 <li data-i18n="job.omninex.b3">Designed and executed functional, regression and API tests, including hands-on performance testing with Apache JMeter.</li>
                 <li data-i18n="job.omninex.b4">Supported automated test execution and software validation in CI/CD workflows.</li>
+                <li data-i18n="job.omninex.b5">Applied BDD with Gherkin to describe acceptance scenarios and connect them to automated tests.</li>
               </ul>
-              <ul class="tags"><li>Selenium</li><li>Python</li><li>POM</li><li>JMeter</li><li>API Testing</li><li>CI/CD</li></ul>
+              <ul class="tags"><li>Selenium</li><li>Python</li><li>POM</li><li>JMeter</li><li>Cucumber</li><li>Gherkin</li><li>BDD</li><li>API Testing</li><li>CI/CD</li></ul>
             </div>
           </div>
         </div>
@@ -230,7 +231,8 @@
       <article class="skill-group rv">
         <h3 data-i18n="skills.g.automation">Test Automation</h3>
         <ul><li><b>Playwright</b><span data-i18n="skills.d.playwright">End-to-end automation and browser-based testing.</span></li>
-            <li><b>Cypress</b><span data-i18n="skills.d.cypress">Functional, UI and regression automation.</span></li></ul>
+            <li><b>Cypress</b><span data-i18n="skills.d.cypress">Functional, UI and regression automation.</span></li>
+            <li><b>Gherkin / BDD</b><span data-i18n="skills.d.bdd">Business-readable scenarios wired to automation.</span></li></ul>
       </article>
       <article class="skill-group rv">
         <h3 data-i18n="skills.g.api">API Testing</h3>
@@ -274,6 +276,53 @@
       <article class="do-card rv"><span class="do-n" aria-hidden="true">05</span><h3 data-i18n="doing.i5.t">Bug Investigation</h3><p data-i18n="doing.i5.d">Reproduce issues, analyze logs and application behavior, and provide technical evidence.</p></article>
       <article class="do-card rv"><span class="do-n" aria-hidden="true">06</span><h3 data-i18n="doing.i6.t">Database Validation</h3><p data-i18n="doing.i6.d">Query and validate application data using PostgreSQL and MongoDB.</p></article>
       <article class="do-card rv"><span class="do-n" aria-hidden="true">07</span><h3 data-i18n="doing.i7.t">Performance Testing</h3><p data-i18n="doing.i7.d">Use k6 to investigate application behavior under load.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- BDD -->
+<section id="bdd" aria-labelledby="bdd-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow" data-i18n="bdd.eyebrow">Behavior-Driven Development</p>
+      <h2 class="h2" id="bdd-h" data-i18n="bdd.title">BDD with Gherkin</h2>
+      <p class="intro" data-i18n="bdd.intro">Acceptance criteria written once, in a language business and engineering both read, then executed by Cypress.</p>
+    </div>
+    <div class="bdd">
+      <div class="bdd-text">
+        <span class="kicker" data-i18n="bdd.kicker">Cypress + Cucumber</span>
+        <ul class="bdd-list">
+          <li data-i18n="bdd.i1">Scenarios are written with Product and Engineering before the code, not after it.</li>
+          <li data-i18n="bdd.i2">Gherkin tags such as @smoke and @checkout select what runs in CI.</li>
+          <li data-i18n="bdd.i3">Every step maps to a Cypress step definition, so the feature file is the test.</li>
+        </ul>
+        <ul class="tags"><li>Cucumber</li><li>Gherkin</li><li>Cypress</li><li>BDD</li><li>CI/CD</li></ul>
+      </div>
+      <div class="term bdd-code" role="group" data-i18n-attr="aria-label:bdd.codeLabel" aria-label="Gherkin feature and Cypress step definitions">
+        <div class="term-top" aria-hidden="true"><i></i><i></i><i></i></div>
+        <p class="file">features/checkout.feature</p>
+        <pre><code><span class="tok-tag">@smoke @checkout</span>
+<span class="tok-key">Feature:</span> Checkout
+  <span class="tok-key">Scenario:</span> Successful order
+    <span class="tok-key">Given</span> I am on the checkout page
+    <span class="tok-key">When</span> I add a product and submit the order
+    <span class="tok-key">Then</span> I should see the order confirmation</code></pre>
+        <p class="file">cypress/e2e/checkout.steps.js</p>
+        <pre><code><span class="tok-key">import</span> { Given, When, Then } <span class="tok-key">from</span> <span class="tok-str">'@badeball/cypress-cucumber-preprocessor'</span>
+
+<span class="tok-fn">Given</span>(<span class="tok-str">'I am on the checkout page'</span>, () =&gt; {
+  cy.<span class="tok-fn">visit</span>(<span class="tok-str">'/checkout'</span>)
+})
+
+<span class="tok-fn">When</span>(<span class="tok-str">'I add a product and submit the order'</span>, () =&gt; {
+  cy.<span class="tok-fn">get</span>(<span class="tok-str">'[data-cy=add-to-cart]'</span>).<span class="tok-fn">click</span>()
+  cy.<span class="tok-fn">get</span>(<span class="tok-str">'[data-cy=checkout]'</span>).<span class="tok-fn">click</span>()
+})
+
+<span class="tok-fn">Then</span>(<span class="tok-str">'I should see the order confirmation'</span>, () =&gt; {
+  cy.<span class="tok-fn">contains</span>(<span class="tok-str">'Order confirmed'</span>).<span class="tok-fn">should</span>(<span class="tok-str">'be.visible'</span>)
+})</code></pre>
+      </div>
     </div>
   </div>
 </section>
@@ -496,8 +545,8 @@
   </div>
 </footer>
 
-<script src="assets/js/i18n/en.js?v=2026102201" defer></script>
-<script src="assets/js/i18n/pt.js?v=2026102201" defer></script>
+<script src="assets/js/i18n/en.js?v=2026102901" defer></script>
+<script src="assets/js/i18n/pt.js?v=2026102901" defer></script>
 <script src="assets/js/i18n/index.js?v=2026100801" defer></script>
 <script src="assets/js/main.js?v=2026100801" defer></script>
 </body>

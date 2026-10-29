@@ -104,7 +104,7 @@ test.describe('home page', () => {
   test('skills are grouped by what they are for', async ({ page }) => {
     await page.locator('#skills').scrollIntoViewIfNeeded();
     await expect(page.locator('.skill-group')).toHaveCount(6);
-    for (const tool of ['Playwright', 'Postman', 'PostgreSQL', 'Datadog', 'k6', 'Git / GitHub']) {
+    for (const tool of ['Playwright', 'Gherkin / BDD', 'Postman', 'PostgreSQL', 'Datadog', 'k6', 'Git / GitHub']) {
       await expect(page.locator('#skills')).toContainText(tool);
     }
   });
@@ -112,6 +112,16 @@ test.describe('home page', () => {
   test('What I Do lists the seven practices', async ({ page }) => {
     await expect(page.locator('.do-card')).toHaveCount(7);
     await expect(page.locator('#whatido')).toContainText('Bug Investigation');
+  });
+
+  test('BDD pairs a Gherkin feature with Cypress step definitions', async ({ page }) => {
+    await page.locator('#bdd').scrollIntoViewIfNeeded();
+    await expect(page.locator('#bdd h2')).toContainText('BDD with Gherkin');
+
+    const code = page.locator('#bdd .bdd-code');
+    await expect(code).toContainText('Feature: Checkout');
+    await expect(code).toContainText('Given I am on the checkout page');
+    await expect(code).toContainText('@badeball/cypress-cucumber-preprocessor');
   });
 
   test('the bug report expands into steps, results and evidence', async ({ page }) => {
@@ -232,6 +242,8 @@ test.describe('language switch', () => {
     await expect(page.locator('#skills')).toContainText('Playwright');
     await expect(page.locator('#skills')).toContainText('Datadog');
     await expect(page.locator('#projects .term')).toContainText('$ npx playwright test');
+    await expect(page.locator('#bdd h2')).toHaveText('BDD com Gherkin');
+    await expect(page.locator('#bdd .bdd-code')).toContainText('Feature: Checkout');
   });
 });
 

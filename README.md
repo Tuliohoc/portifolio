@@ -13,9 +13,9 @@ straight to it. This repository keeps the doorway, not the screen.
 
 Two pages, one shared stylesheet, and a language switch that covers all of it:
 
-- **`index.html`** — hero, about, experience, skills, what I do, projects, the
-  Test Lab section, API testing, a bug investigation, observability, education,
-  GitHub and contact. The whole interface speaks English or Portuguese,
+- **`index.html`** — hero, about, experience, skills, what I do, BDD with
+  Gherkin, projects, the Test Lab section, API testing, a bug investigation,
+  observability, education, GitHub and contact. The whole interface speaks English or Portuguese,
   instantly and without a reload. The Test Lab entry in the navigation and the
   whole Test Lab card open the deployed lab at
   <https://tuliohoc.github.io/academybugs-tests-/>.
@@ -40,7 +40,7 @@ Two pages, one shared stylesheet, and a language switch that covers all of it:
 |   \-- img/                     # portrait, favicon, social icons
 |-- scripts/serve.mjs            # the static server the tests and previews run on
 |-- scripts/ci-summary.mjs       # turns the Playwright JSON report into the summary CI draws
-|-- tests/smoke.spec.ts          # Playwright suite, 28 tests x 2 projects
+|-- tests/smoke.spec.ts          # Playwright suite, 31 tests x 2 projects
 |-- .github/workflows/           # ci.yml, deploy.yml
 \-- SECURITY.md, LICENSE.md      # hardening, and all rights reserved
 ```
@@ -75,11 +75,12 @@ the reports they come from.
 
 ## Tests
 
-`yarn test` runs 28 checks twice — desktop Chromium and a Pixel 7 viewport —
-56 in total, covering the paths a visitor actually takes: navigation, the
-experience and bug accordions, the skills groups, the API tester, the PT/EN
-switch and its persistence, the theme, the Test Lab doorway and where it hands
-you over to, the not found page, and the legacy anchors this design replaced.
+`yarn test` runs 31 checks twice — desktop Chromium and a Pixel 7 viewport —
+62 in total, covering the paths a visitor actually takes: navigation, the
+experience and bug accordions, the skills groups, the BDD section, the API
+tester, the PT/EN switch and its persistence, the theme, the Test Lab doorway
+and where it hands you over to, the not found page, and the legacy anchors this
+design replaced.
 
 The doorway at `academybugs.html` is one screen deep: it says the lab moved,
 offers the link for anyone who lands there without following the redirect, and

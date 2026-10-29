@@ -288,6 +288,25 @@ section.graphite{
 .term .note{margin-top:auto;padding-top:18px;color:#97A1AC;font-size:.75rem}
 .term .agent{color:#E0B25C}
 .proj-small{margin-top:20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+
+/* ---------- bdd: the feature file on the left, the steps that run it on the right ---------- */
+.bdd{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.bdd-text{padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;gap:16px}
+.bdd-list{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.bdd-list li{display:grid;grid-template-columns:9px minmax(0,1fr);gap:10px;color:var(--soft);font-size:.9375rem;line-height:1.55}
+.bdd-list li::before{content:"";width:8px;height:8px;margin-top:.55em;border-radius:2px;background:var(--gold-fill)}
+.bdd-text .tags{padding:0;margin-top:auto}
+.bdd-code{gap:0}
+.bdd-code .file{font-family:var(--mono);font-size:.75rem;color:#86A6FF;margin:0 0 8px;letter-spacing:.02em}
+.bdd-code .file + pre{margin:0 0 22px}
+.bdd-code pre{overflow-x:auto;margin:0}
+.bdd-code pre:last-child{margin-bottom:0}
+.bdd-code code{font-family:var(--mono);font-size:.75rem;line-height:1.75;color:var(--panel-text);white-space:pre}
+.bdd-code .tok-key{color:#86A6FF}
+.bdd-code .tok-tag{color:#E0B25C}
+.bdd-code .tok-str{color:#A8D08D}
+.bdd-code .tok-fn{color:#EEF1F4}
+
 .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:10px}
 .card h3{font-size:1.1875rem;font-weight:650}
 .card p{color:var(--soft);font-size:.9375rem}
@@ -375,7 +394,7 @@ form{position:relative;background:var(--surface);border:1px solid var(--line);bo
   .foot{position:fixed;left:0;right:0;bottom:0;z-index:40;margin-top:0}
   .foot-inner{padding-block:0}
 }
-@media (max-width:1024px){ .proj{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:1024px){ .proj,.bdd{grid-template-columns:minmax(0,1fr)} }
 @media (max-width:900px){
   .mark em{display:none}
   .nav a{padding:0 11px}
@@ -399,6 +418,9 @@ form{position:relative;background:var(--surface);border:1px solid var(--line);bo
   .cvtxt{display:none}
   .icon-btn{width:36px;height:36px}
   .proj-small,.row2{grid-template-columns:minmax(0,1fr)}
+  /* on a narrow screen the code wraps instead of hiding behind a horizontal scroll */
+  .bdd-code code{white-space:pre-wrap;overflow-wrap:anywhere}
+  .bdd-code pre{overflow-x:visible}
   .facts div{grid-template-columns:minmax(0,1fr);gap:2px}
   .channel{grid-template-columns:minmax(0,1fr) auto}
   .channel dt{grid-column:1/-1}
